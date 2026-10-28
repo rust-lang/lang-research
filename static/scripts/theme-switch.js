@@ -1,9 +1,13 @@
 "use strict";
 
+// The site may be served from a subpath (e.g. rust-lang.github.io/lang-research/),
+// so derive the site root from this script's own URL.
+const siteRoot = document.currentScript.src.replace(/scripts\/theme-switch\.js(\?.*)?$/, "");
+
 // val: "light" | "dark"
 function renderTheme(val) {
     document.documentElement.setAttribute("data-theme", val);
-    document.getElementById("syntax-theme").href = `/giallo-${val}.css`
+    document.getElementById("syntax-theme").href = `${siteRoot}giallo-${val}.css`
 }
 
 function changeThemeTo(val) {
@@ -11,13 +15,13 @@ function changeThemeTo(val) {
         setThemeToSystemPref();
         // delete explicit theme pref from browser storage
         if (storageAvailable("localStorage")) {
-            localStorage.removeItem("blog-rust-lang-org-theme");
+            localStorage.removeItem("lang-research-theme");
         }
     } else {
         renderTheme(val);
         // save theme prefs in the browser
         if (storageAvailable("localStorage")) {
-            localStorage.setItem("blog-rust-lang-org-theme", val);
+            localStorage.setItem("lang-research-theme", val);
         }
     }
     // the theme dropdown will close itself when returning to the dropdown() caller
@@ -69,7 +73,7 @@ function setThemeToSystemPref() {
 // Check for saved user preference on load, else check and save user agent prefs
 let savedTheme = null;
 if (storageAvailable("localStorage")) {
-    savedTheme = localStorage.getItem("blog-rust-lang-org-theme");
+    savedTheme = localStorage.getItem("lang-research-theme");
 }
 if (savedTheme) {
     renderTheme(savedTheme);
