@@ -1,4 +1,34 @@
-// Styles specific to Rust Lang Research.
+// Rust Lang Research palette and identity.
+//
+// Overrides the variables inherited from blog.rust-lang.org so this blog is
+// recognizably different from the main and "Inside Rust" blogs: dark by
+// default (see layout.html and theme-switch.js), an ink-violet background,
+// and a mint accent in place of the main blog's yellow.
+
+// A muted terminal green: still reads as "hacker", but easy on the eyes.
+$research-accent: #98c379;
+$research-accent-strong: #3d7a2e;
+
+:root, :root:not([data-theme]) {
+  --yellow: #{$research-accent-strong};
+}
+
+:root[data-theme='dark'] {
+  --yellow: #{$research-accent};
+  --red: #{$research-accent-strong};
+  --body-background-color: #0a0d0a;
+  --gray: #0f140f;
+  --blockquote-bg-color: rgba(152, 195, 121, 0.06);
+  --blockquote-left-border-color: #{$research-accent-strong};
+  --code-bg-color: rgba(152, 195, 121, 0.05);
+  --code-border-color: rgba(152, 195, 121, 0.25);
+  --theme-popup-bg: #050705;
+}
+
+:root[data-theme='dark'] .post a,
+:root[data-theme='dark'] header a {
+  color: #{$research-accent};
+}
 
 .audience-banner {
   margin: 1.5rem 0;
@@ -28,4 +58,84 @@
   font-size: 0.7em;
   font-style: italic;
   opacity: 0.75;
+}
+
+// Identity: the accent color is used in both themes, so the blog doesn't
+// depend on dark mode to look different from the main Rust blog.
+
+body {
+  border-top: 6px solid var(--yellow);
+}
+
+// `div.brand span` (from app.scss) gives every span a negative margin; undo it
+// for the inner span so the space before "Lang Research" survives.
+div.brand span.wordmark-accent {
+  display: inline;
+  margin-left: 0;
+  color: var(--yellow);
+}
+
+:root:not([data-theme='dark']) .post a,
+:root:not([data-theme='dark']) header a {
+  color: #{$research-accent-strong};
+}
+
+// --- Hacker variant -------------------------------------------------------
+$research-mono: Menlo, ui-monospace, "SF Mono", "DejaVu Sans Mono", Consolas, monospace;
+
+section header h2, .post h2, h3 {
+  font-family: $research-mono;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+// Wordmark: "Rust" stays in the main blog's slab font; "Lang Research" is
+// monospace. Monospace glyphs (and their spaces) are wider than the slab's,
+// so shrink the mono part slightly and tighten its word spacing so the two
+// halves read as one name.
+div.brand span.wordmark-accent {
+  font-family: $research-mono;
+  font-weight: 700;
+  font-size: 0.9em;
+  letter-spacing: -0.03em;
+  word-spacing: -0.3em;
+  margin-left: -0.12em;
+}
+
+// A static terminal cursor after the wordmark.
+div.brand span.wordmark-accent::after {
+  content: "_";
+}
+
+// Soft, rounded goal chips: a tinted pill rather than a hard box.
+.goal-chip {
+  border-radius: 999px;
+  border: 1px solid rgba(152, 195, 121, 0.35);
+  background-color: rgba(152, 195, 121, 0.12);
+  padding: 0.1rem 0.7rem;
+  font-family: $research-mono;
+  font-size: 0.9em;
+  text-decoration: none !important;
+  transition: background-color 0.15s ease;
+}
+
+.goal-chip:hover {
+  background-color: rgba(152, 195, 121, 0.22);
+}
+
+.goal-chip::before {
+  content: "#";
+  margin-right: 0.1em;
+  opacity: 0.5;
+}
+
+:root:not([data-theme='dark']) .goal-chip {
+  border-color: rgba(61, 122, 46, 0.3);
+  background-color: rgba(61, 122, 46, 0.08);
+}
+
+.audience-banner {
+  font-style: normal;
+  font-family: $research-mono;
+  font-size: 0.8em;
 }
