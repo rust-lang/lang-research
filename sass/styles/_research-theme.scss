@@ -1,0 +1,10 @@
+// Styles specific to Rust Lang Research.
+
+.audience-banner {
+  margin: 1.5rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 6px solid var(--yellow);
+  background-color: var(--blockquote-bg-color);
+  font-size: 0.9em;
+  font-style: italic;
+}
