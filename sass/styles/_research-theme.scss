@@ -1,0 +1,180 @@
+// Rust Lang Research palette and identity.
+//
+// Overrides the variables inherited from blog.rust-lang.org so this blog is
+// recognizably different from the main and "Inside Rust" blogs: dark by
+// default (see layout.html and theme-switch.js), an ink-violet background,
+// and a mint accent in place of the main blog's yellow.
+
+// A muted terminal green: still reads as "hacker", but easy on the eyes.
+$research-accent: #85d370;
+// Same hue as the dark-mode accent, darkened for contrast on white.
+$research-accent-strong: #3b8128;
+
+:root, :root:not([data-theme]) {
+  --yellow: #{$research-accent-strong};
+}
+
+:root[data-theme='dark'] {
+  --yellow: #{$research-accent};
+  --red: #{$research-accent-strong};
+  --body-background-color: #131813;
+  --gray: #1d241d;
+  --blockquote-bg-color: rgba(133, 211, 112, 0.06);
+  --blockquote-left-border-color: #{$research-accent-strong};
+  --code-bg-color: rgba(133, 211, 112, 0.05);
+  --code-border-color: rgba(133, 211, 112, 0.25);
+  --theme-popup-bg: #050705;
+}
+
+:root[data-theme='dark'] .post a,
+:root[data-theme='dark'] header a {
+  color: #{$research-accent};
+}
+
+.audience-banner {
+  margin: 1.5rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 6px solid var(--yellow);
+  background-color: var(--blockquote-bg-color);
+  font-size: 0.9em;
+  font-style: italic;
+}
+
+.post-goals {
+  margin-top: 0.5rem;
+  font-size: 0.85em;
+}
+
+.goal-chip {
+  display: inline-block;
+  margin: 0.15rem 0.25rem;
+  padding: 0.05rem 0.6rem;
+  border: 1px solid var(--yellow);
+  border-radius: 1rem;
+  text-decoration: none;
+}
+
+.post-summary {
+  margin: 0.1rem 0 0.6rem;
+  font-size: 0.7em;
+  font-style: italic;
+  opacity: 0.75;
+}
+
+// Identity: the accent color is used in both themes, so the blog doesn't
+// depend on dark mode to look different from the main Rust blog.
+
+body {
+  border-top: 6px solid var(--yellow);
+}
+
+// `div.brand span` (from app.scss) gives every span a negative margin; undo it
+// for the inner span so the space before "Lang Research" survives.
+div.brand span.wordmark-accent {
+  display: inline;
+  margin-left: 0;
+  color: var(--yellow);
+}
+
+:root:not([data-theme='dark']) .post a,
+:root:not([data-theme='dark']) header a {
+  color: #{$research-accent-strong};
+}
+
+// --- Hacker variant -------------------------------------------------------
+$research-mono: Menlo, ui-monospace, "SF Mono", "DejaVu Sans Mono", Consolas, monospace;
+
+section header h2, .post h2, h3 {
+  font-family: $research-mono;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+// Wordmark: "Rust" stays in the main blog's slab font; "Lang Research" is
+// monospace. Monospace glyphs (and their spaces) are wider than the slab's,
+// so shrink the mono part slightly and tighten its word spacing so the two
+// halves read as one name.
+div.brand span.wordmark-accent {
+  font-family: $research-mono;
+  font-weight: 700;
+  font-size: 0.9em;
+  letter-spacing: -0.03em;
+  word-spacing: -0.3em;
+  margin-left: -0.12em;
+}
+
+// A static terminal cursor after the wordmark.
+div.brand span.wordmark-accent::after {
+  content: "_";
+}
+
+// Soft, rounded goal chips: a tinted pill rather than a hard box.
+.goal-chip {
+  border-radius: 999px;
+  border: 1px solid rgba(133, 211, 112, 0.35);
+  background-color: rgba(133, 211, 112, 0.12);
+  padding: 0.1rem 0.7rem;
+  font-family: $research-mono;
+  font-size: 0.9em;
+  text-decoration: none !important;
+  transition: background-color 0.15s ease;
+}
+
+.goal-chip:hover {
+  background-color: rgba(133, 211, 112, 0.22);
+}
+
+.goal-chip::before {
+  content: "#";
+  margin-right: 0.1em;
+  opacity: 0.5;
+}
+
+:root:not([data-theme='dark']) .goal-chip {
+  border-color: rgba(59, 129, 40, 0.3);
+  background-color: rgba(59, 129, 40, 0.08);
+}
+
+
+// Type scale. The main blog sizes headings for short announcement titles;
+// research posts have long titles and deeper outlines.
+section header h2 { font-size: 1.8em; }        // post titles
+h3, .post h2, header h2 { font-size: 1.6em; }  // index headings
+.post h2 { font-size: 1.4em; }
+.post h3 { font-size: 1.2em; }
+
+// Post text: the metadata block and the body share one size. Code is set
+// smaller, because a monospace font looks bigger than the prose font at the
+// same size, and shrinks further if needed so that 80 columns fit in the
+// column (Menlo-like fonts are ~0.6em per character, so 80 columns plus
+// padding is about 51em).
+.post-column {
+  container-type: inline-size;
+  font-size: 1.4rem;
+}
+
+.post code {
+  font-size: 0.86em;
+}
+
+.post pre > code {
+  padding: 1em 1.25em;
+  font-size: min(0.86em, max(11px, calc(100cqi / 51)));
+}
+
+// The footer is always dark, so it uses the dark-mode accent in both themes.
+footer.footer a,
+footer.footer a:hover {
+  color: #{$research-accent};
+}
+
+// Keep the date, projects, and audience banner together as one block, with
+// the space before the post body below it rather than under the date.
+.post-meta {
+  margin-bottom: 2.5em;
+
+  .publish-date-author { margin-bottom: 0; }
+  .post-goals { margin-top: 0.6em; }
+  .audience-banner { margin: 1em 0 0; }
+  p { margin: 0.75em 0 0; }
+}

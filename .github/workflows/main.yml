@@ -1,0 +1,80 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+  # Rebuild daily so goal renames and new goal periods show up without a new post.
+  schedule:
+    - cron: '17 6 * * *'
+
+
+env:
+  ZOLA_VERSION: v0.23.6
+
+jobs:
+  goals:
+    name: Project goal references
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo test --workspace
+      - run: git clone --depth 1 https://github.com/rust-lang/goals .goals-checkout
+      # Fails if a post refers to an unknown or ambiguous goal.
+      - run: cargo run -p goals_index -- .goals-checkout
+
+  spelling:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: crate-ci/typos@276087d9a4f06398b3e04825487805e2d7375888 # v1.52.2
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Swatinem/rust-cache@v2
+      - name: Generate project goal data and pages
+        run: |
+          git clone --depth 1 https://github.com/rust-lang/goals .goals-checkout
+          cargo run -p goals_index -- .goals-checkout
+      - name: Install Zola
+        run: |
+          curl -sSL "https://github.com/getzola/zola/releases/download/${ZOLA_VERSION}/zola-${ZOLA_VERSION}-x86_64-unknown-linux-gnu.tar.gz" \
+            | tar xz -C /usr/local/bin zola
+          zola --version
+      - run: zola check --skip-external-links
+      # Build for wherever this repository's Pages site lives, so forks
+      # (e.g. a personal preview at <user>.github.io/lang-research) work too.
+      - run: zola build --base-url "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"
+      - run: touch public/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    needs: [goals, spelling, build]
+    permissions:
+      pages: write
+      id-token: write
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+  # Summary job used as the single required status check.
+  conclusion:
+    name: CI
+    needs: [goals, spelling, build, deploy]
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          NEEDS: ${{ toJson(needs) }}
+        run: jq --exit-status 'all(.result == "success" or .result == "skipped")' <<< "$NEEDS"
