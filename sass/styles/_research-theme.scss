@@ -6,8 +6,9 @@
 // and a mint accent in place of the main blog's yellow.
 
 // A muted terminal green: still reads as "hacker", but easy on the eyes.
-$research-accent: #98c379;
-$research-accent-strong: #3d7a2e;
+$research-accent: #85d370;
+// Same hue as the dark-mode accent, darkened for contrast on white.
+$research-accent-strong: #3b8128;
 
 :root, :root:not([data-theme]) {
   --yellow: #{$research-accent-strong};
@@ -16,12 +17,12 @@ $research-accent-strong: #3d7a2e;
 :root[data-theme='dark'] {
   --yellow: #{$research-accent};
   --red: #{$research-accent-strong};
-  --body-background-color: #0a0d0a;
-  --gray: #0f140f;
-  --blockquote-bg-color: rgba(152, 195, 121, 0.06);
+  --body-background-color: #131813;
+  --gray: #1d241d;
+  --blockquote-bg-color: rgba(133, 211, 112, 0.06);
   --blockquote-left-border-color: #{$research-accent-strong};
-  --code-bg-color: rgba(152, 195, 121, 0.05);
-  --code-border-color: rgba(152, 195, 121, 0.25);
+  --code-bg-color: rgba(133, 211, 112, 0.05);
+  --code-border-color: rgba(133, 211, 112, 0.25);
   --theme-popup-bg: #050705;
 }
 
@@ -110,8 +111,8 @@ div.brand span.wordmark-accent::after {
 // Soft, rounded goal chips: a tinted pill rather than a hard box.
 .goal-chip {
   border-radius: 999px;
-  border: 1px solid rgba(152, 195, 121, 0.35);
-  background-color: rgba(152, 195, 121, 0.12);
+  border: 1px solid rgba(133, 211, 112, 0.35);
+  background-color: rgba(133, 211, 112, 0.12);
   padding: 0.1rem 0.7rem;
   font-family: $research-mono;
   font-size: 0.9em;
@@ -120,7 +121,7 @@ div.brand span.wordmark-accent::after {
 }
 
 .goal-chip:hover {
-  background-color: rgba(152, 195, 121, 0.22);
+  background-color: rgba(133, 211, 112, 0.22);
 }
 
 .goal-chip::before {
@@ -130,12 +131,18 @@ div.brand span.wordmark-accent::after {
 }
 
 :root:not([data-theme='dark']) .goal-chip {
-  border-color: rgba(61, 122, 46, 0.3);
-  background-color: rgba(61, 122, 46, 0.08);
+  border-color: rgba(59, 129, 40, 0.3);
+  background-color: rgba(59, 129, 40, 0.08);
 }
 
 .audience-banner {
   font-style: normal;
   font-family: $research-mono;
   font-size: 0.8em;
+}
+
+// The footer is always dark, so it uses the dark-mode accent in both themes.
+footer.footer a,
+footer.footer a:hover {
+  color: #{$research-accent};
 }
