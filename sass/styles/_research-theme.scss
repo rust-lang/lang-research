@@ -135,11 +135,6 @@ div.brand span.wordmark-accent::after {
   background-color: rgba(59, 129, 40, 0.08);
 }
 
-.audience-banner {
-  font-style: normal;
-  font-family: $research-mono;
-  font-size: 0.8em;
-}
 
 // Type scale. The main blog sizes headings for short announcement titles;
 // research posts have long titles and deeper outlines.
@@ -171,4 +166,15 @@ h3, .post h2, header h2 { font-size: 1.6em; }  // index headings
 footer.footer a,
 footer.footer a:hover {
   color: #{$research-accent};
+}
+
+// Keep the date, projects, and audience banner together as one block, with
+// the space before the post body below it rather than under the date.
+.post-meta {
+  margin-bottom: 2.5em;
+
+  .publish-date-author { margin-bottom: 0; }
+  .post-goals { margin-top: 0.6em; }
+  .audience-banner { margin: 1em 0 0; }
+  p { margin: 0.75em 0 0; }
 }

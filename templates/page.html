@@ -10,37 +10,39 @@
       <div class="highlight mt2 mb3"></div>
     </header>
 
-    <div class="publish-date-author">{{<month_name num={month} />}} {{ day }}, {{ year }} &middot; {{<escape_hbs input={page.authors | join(sep=", ")} />}}
-    {% if page.updated %}&middot; <span class="i">updated {{ page.updated | date(format="%b %-d, %Y") }}</span>{% endif %}
-    </div>
+    <div class="post-meta">
+      <div class="publish-date-author">{{<month_name num={month} />}} {{ day }}, {{ year }} &middot; {{<escape_hbs input={page.authors | join(sep=", ")} />}}
+      {% if page.updated %}&middot; <span class="i">updated {{ page.updated | date(format="%b %-d, %Y") }}</span>{% endif %}
+      </div>
 
-    {%- set goals = load_data(path="data/goals.json", required=false) %}
-    {%- if goals and goals.post_goals is containing(pat=page.relative_path) %}
-    <div class="post-goals">
-      Project{{ goals.post_goals[page.relative_path] | length | pluralize }}:
-      {%- for g in goals.post_goals[page.relative_path] %}
-      <a class="goal-chip" href="{{ config.base_url | safe }}/projects/{{ g.slug }}/">{{ g.title }}</a>
-      {%- endfor %}
-    </div>
-    {%- endif %}
-
-    {%- set show_banner = true %}
-    {%- if page.extra is containing(pat="audience_banner") %}{% set show_banner = page.extra.audience_banner %}{% endif %}
-    {%- if show_banner %}
-    <aside class="audience-banner" role="note">
-      {{ config.extra.audience_banner | safe }}
-      {%- if page.extra is containing(pat="discussion") %}
-      Discuss this post <a href="{{ page.extra.discussion | safe }}">on Zulip</a>.
+      {%- set goals = load_data(path="data/goals.json", required=false) %}
+      {%- if goals and goals.post_goals is containing(pat=page.relative_path) %}
+      <div class="post-goals">
+        Project{{ goals.post_goals[page.relative_path] | length | pluralize }}:
+        {%- for g in goals.post_goals[page.relative_path] %}
+        <a class="goal-chip" href="{{ config.base_url | safe }}/projects/{{ g.slug }}/">{{ g.title }}</a>
+        {%- endfor %}
+      </div>
       {%- endif %}
-    </aside>
-    {%- endif %}
 
-    {%- if page.extra is containing(pat="cross_post") %}
-    <p class="cross-post i">Originally posted at <a href="{{ page.extra.cross_post | safe }}">{{ page.extra.cross_post }}</a>.</p>
-    {%- endif %}
-    {%- if page.extra is containing(pat="superseded_by") %}
-    <p class="superseded i">This post has been superseded by <a href="{{ config.base_url | safe }}{{ page.extra.superseded_by | safe }}">a newer post</a>.</p>
-    {%- endif %}
+      {%- set show_banner = true %}
+      {%- if page.extra is containing(pat="audience_banner") %}{% set show_banner = page.extra.audience_banner %}{% endif %}
+      {%- if show_banner %}
+      <aside class="audience-banner" role="note">
+        {{ config.extra.audience_banner | safe }}
+        {%- if page.extra is containing(pat="discussion") %}
+        Discuss this post <a href="{{ page.extra.discussion | safe }}">on Zulip</a>.
+        {%- endif %}
+      </aside>
+      {%- endif %}
+
+      {%- if page.extra is containing(pat="cross_post") %}
+      <p class="cross-post i">Originally posted at <a href="{{ page.extra.cross_post | safe }}">{{ page.extra.cross_post }}</a>.</p>
+      {%- endif %}
+      {%- if page.extra is containing(pat="superseded_by") %}
+      <p class="superseded i">This post has been superseded by <a href="{{ config.base_url | safe }}{{ page.extra.superseded_by | safe }}">a newer post</a>.</p>
+      {%- endif %}
+    </div>
 
     <div class="post">
       {{ page.content | safe }}
