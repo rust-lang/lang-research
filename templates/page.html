@@ -4,7 +4,7 @@
 {% set month = page.date | date(format="%m") | int -%}
 {% set day = page.date | date(format="%d") | int -%}
 <section id="{{<escape_hbs input={page.title} />}}" class="white">
-  <div class="w-100 mw-none ph3 mw8-m mw8-l center f3">
+  <div class="post-column w-100 mw-none ph3 mw8-m mw8-l center f3">
     <header>
       <h2>{{<escape_hbs input={page.title} />}}</h2>
       <div class="highlight mt2 mb3"></div>

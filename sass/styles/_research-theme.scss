@@ -141,6 +141,32 @@ div.brand span.wordmark-accent::after {
   font-size: 0.8em;
 }
 
+// Type scale. The main blog sizes headings for short announcement titles;
+// research posts have long titles and deeper outlines.
+section header h2 { font-size: 1.8em; }        // post titles
+h3, .post h2, header h2 { font-size: 1.6em; }  // index headings
+.post h2 { font-size: 1.4em; }
+.post h3 { font-size: 1.2em; }
+
+// Post text: the metadata block and the body share one size. Code is set
+// smaller, because a monospace font looks bigger than the prose font at the
+// same size, and shrinks further if needed so that 80 columns fit in the
+// column (Menlo-like fonts are ~0.6em per character, so 80 columns plus
+// padding is about 51em).
+.post-column {
+  container-type: inline-size;
+  font-size: 1.4rem;
+}
+
+.post code {
+  font-size: 0.86em;
+}
+
+.post pre > code {
+  padding: 1em 1.25em;
+  font-size: min(0.86em, max(11px, calc(100cqi / 51)));
+}
+
 // The footer is always dark, so it uses the dark-mode accent in both themes.
 footer.footer a,
 footer.footer a:hover {
