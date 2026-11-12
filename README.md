@@ -65,6 +65,16 @@ period: `field-projections`, not `2026/field-projections`.
 
 Each goal with posts gets a "research project" page under `/projects/`.
 
+### Cross-posting
+
+If the post also lives on your own blog, set `extra.cross_post` to its URL. The
+original stays the canonical copy for search engines.
+
+Please link back from the original to the post's research project page (e.g.
+`https://rust-lang.github.io/lang-research/projects/field-projections/`) or a
+tag page. Readers who find your post through search can then discover related
+posts by other authors.
+
 ### Merging
 
 Anyone with write access to this repository may merge their own post once CI passes.
